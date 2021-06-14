@@ -18,6 +18,8 @@ namespace Entities.Models
 
         public string Email { get; set; }
 
+        public int CountLetters { get; set; }
+
         [ForeignKey(nameof(Organization))]
         public Guid OrganizationId { get; set; }
         public Organization Organization { get; set; }
