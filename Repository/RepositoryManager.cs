@@ -13,13 +13,14 @@ namespace Repository
         private RepositoryContext _repository;
         private IOrganizationRepository _organizationRepository; 
         private IContactRepository _contactRepository;
+        private IHobbyRepository _hobbyRepository;
 
         public RepositoryManager(RepositoryContext repository)
         {
             _repository = repository;
         }
 
-        public IOrganizationRepository Organization
+        public IOrganizationRepository Organizations
         {
             get
             {
@@ -30,7 +31,7 @@ namespace Repository
             }
         }
 
-        public IContactRepository Contact
+        public IContactRepository Contacts
         {
             get
             {
@@ -38,6 +39,17 @@ namespace Repository
                     _contactRepository = new ContactRepository(_repository);
 
                 return _contactRepository;
+            }
+        }
+
+        public IHobbyRepository Hybbies
+        {
+            get
+            {
+                if (_hobbyRepository == null)
+                    _hobbyRepository = new HobbyRepository(_repository);
+
+                return _hobbyRepository;
             }
         }
 

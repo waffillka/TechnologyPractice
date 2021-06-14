@@ -8,8 +8,9 @@ namespace Contracts
 {
     public interface IRepositoryManager
     { 
-        IOrganizationRepository Organization { get; }
-        IContactRepository Contact { get; }
+        IOrganizationRepository Organizations { get; }
+        IContactRepository Contacts { get; }
+        IHobbyRepository Hybbies { get; }
         Task SaveAsync();
     }
 }
