@@ -15,6 +15,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TechnologyPractice.Extensions;
+using AutoMapper;
+using Contracts;
 
 namespace TechnologyPractice
 {
@@ -37,6 +39,8 @@ namespace TechnologyPractice
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -45,7 +49,7 @@ namespace TechnologyPractice
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
@@ -53,7 +57,7 @@ namespace TechnologyPractice
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TechnologyPractice v1"));
             }
-
+            app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
 
             app.UseStaticFiles(); 
