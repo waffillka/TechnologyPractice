@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Organization
+    public class Hobby
     {
-        [Column("OrganizationId")]
+        [Column("HobbyId")]
         public Guid Id { get; set; }
-
         public string Name { get; set; }
 
-        public ICollection<Contact> Contacts { get; set; }
+        public ICollection<Contact> Contacts { get; set; } 
     }
 }
