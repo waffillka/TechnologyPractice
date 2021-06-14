@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,30 @@ namespace TechnologyPractice.Controllers
             _logger = logger;
             _repository = repository;
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOrganizations()
+        {
+            var organizations = await _repository.Organizations.GetAllOrganizationsAsync(false);
+            var organizationsDto = _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
+
+            return Ok(organizationsDto);
+        }
+
+        [HttpGet("{id}", Name = "OrganizationId")]
+        public async Task<IActionResult> GetOrganization(Guid id)
+        {
+            var organization = await _repository.Organizations.GetOrganizationAsync(id, false);
+
+            if (organization == null)
+            {
+                _logger.LogInfo($"Organization with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            var organizationDto = _mapper.Map<OrganizationDto>(organization);
+
+            return Ok(organizationDto);
         }
     }
 }

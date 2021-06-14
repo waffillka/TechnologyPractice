@@ -41,7 +41,13 @@ namespace TechnologyPractice
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllers();
+            services.AddControllers(config => 
+            {
+                config.RespectBrowserAcceptHeader = true; 
+                config.ReturnHttpNotAcceptable = true; 
+            }).AddNewtonsoftJson()
+            .AddXmlDataContractSerializerFormatters();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TechnologyPractice", Version = "v1" });
