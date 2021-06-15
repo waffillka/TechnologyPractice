@@ -13,6 +13,7 @@ namespace TechnologyPractice
         public MappingProfile()
         {
             CreateMap<Organization, OrganizationDto>();
+            CreateMap<Contact, ContactDto>();
         }
     }
 }

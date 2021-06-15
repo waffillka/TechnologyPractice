@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace TechnologyPractice.Controllers
 {
-    [Route("api/organization")]
+    [Route("api/organizations")]
     [ApiController]
     public class OrganizationController : ControllerBase
     {
