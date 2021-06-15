@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +28,7 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetContactsFormOrganization(Guid organizationId)
+        public async Task<IActionResult> GetContactsFormOrganization(Guid organizationId, [FromQuery] ContactParameters contactParameters)
         {
             var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, false);
 
@@ -36,7 +38,8 @@ namespace TechnologyPractice.Controllers
                 return NotFound();
             }
 
-            var contacts = await _repository.Contacts.GetContactsAsync(organizationId, false);
+            var contacts = await _repository.Contacts.GetContactsAsync(organizationId, contactParameters, false);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(contacts.MetaData));
             var contactsDto = _mapper.Map<IEnumerable<ContactDto>>(contacts);
 
             return Ok(contactsDto);

@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using TechnologyPractice.Extensions;
 using AutoMapper;
 using Contracts;
+using TechnologyPractice.ActionFilters;
 
 namespace TechnologyPractice
 {
@@ -38,6 +39,8 @@ namespace TechnologyPractice
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
+
+            services.AddScoped<ValidateOrganizationExistsAttribute>();
 
             services.AddAutoMapper(typeof(Startup));
 

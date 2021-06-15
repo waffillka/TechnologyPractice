@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Contracts
 {
     public interface IOrganizationRepository
     {
-        Task<IEnumerable<Organization>> GetAllOrganizationsAsync(bool trackChenges);
+        Task<PagedList<Organization>> GetAllOrganizationsAsync(bool trackChenges, OrganizationParameters organizationParameters);
         Task<Organization> GetOrganizationAsync(Guid organizationId, bool trackChenges);
     }
 }
