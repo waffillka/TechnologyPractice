@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnologyPractice", "TechnologyPractice\TechnologyPractice.csproj", "{E08143E6-54D8-49BA-9E88-B4607CD02977}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnologyPractice", "TechnologyPractice\TechnologyPractice.csproj", "{E08143E6-54D8-49BA-9E88-B4607CD02977}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{BEE4AB53-BA81-422D-BDBC-FD7B95D62B20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{BEE4AB53-BA81-422D-BDBC-FD7B95D62B20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{3FC384C9-ECDC-492B-B27C-E7980412F06C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{3FC384C9-ECDC-492B-B27C-E7980412F06C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{235285AD-0492-48C1-A00E-F648E92161B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{235285AD-0492-48C1-A00E-F648E92161B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{8177AFE6-358F-4F29-B5B9-0138D972B28F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{8177AFE6-358F-4F29-B5B9-0138D972B28F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService", "MailService\EmailService.csproj", "{9F93128E-6627-4641-9662-648BE3026AD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{8177AFE6-358F-4F29-B5B9-0138D972B28F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8177AFE6-358F-4F29-B5B9-0138D972B28F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8177AFE6-358F-4F29-B5B9-0138D972B28F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F93128E-6627-4641-9662-648BE3026AD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F93128E-6627-4641-9662-648BE3026AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F93128E-6627-4641-9662-648BE3026AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F93128E-6627-4641-9662-648BE3026AD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
