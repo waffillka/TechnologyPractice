@@ -42,8 +42,13 @@ namespace TechnologyPractice
             services.ConfigureEmailService();
 
             services.AddScoped<ValidateOrganizationExistsAttribute>();
+            services.AddScoped<ValidationFilterAttribute>();
 
             services.AddAutoMapper(typeof(Startup));
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             services.AddControllers(config => 
             {

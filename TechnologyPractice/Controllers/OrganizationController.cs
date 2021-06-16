@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechnologyPractice.ActionFilters;
 
 namespace TechnologyPractice.Controllers
 {
@@ -49,6 +50,20 @@ namespace TechnologyPractice.Controllers
             var organizationDto = _mapper.Map<OrganizationDto>(organization);
 
             return Ok(organizationDto);
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> PostCreateOrganization([FromBody] OrganizationCreationDto organization)
+        {
+            var organizationEntity = _mapper.Map<Organization>(organization);
+
+            _repository.Organizations.CreateOrganization(organizationEntity);
+            await _repository.SaveAsync();
+
+            var organizationToReturn = _mapper.Map<OrganizationDto>(organizationEntity);
+
+            return CreatedAtRoute("OrganizationById", new { id = organizationToReturn.Id }, organizationToReturn);
         }
     }
 }

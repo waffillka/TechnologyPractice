@@ -18,6 +18,10 @@ namespace Repository
         {
         }
 
+        public void CreateOrganization(Organization organization) => Create(organization);
+
+        public void DeleteOrganization(Organization organization) => Delete(organization);
+
         public async Task<IEnumerable<Organization>> GetAllOrganizationsAsync(bool trackChenges, RequestParameters organizationParameters) =>
             await FindAll(organizationParameters, trackChenges)
             .ToListAsync();

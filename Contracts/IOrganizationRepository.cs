@@ -12,5 +12,7 @@ namespace Contracts
     {
         Task<IEnumerable<Organization>> GetAllOrganizationsAsync(bool trackChenges, RequestParameters organizationParameters);
         Task<Organization> GetOrganizationAsync(Guid organizationId, RequestParameters organizationParameters, bool trackChenges);
+        void CreateOrganization(Organization organization);
+        void DeleteOrganization(Organization organization);
     }
 }
