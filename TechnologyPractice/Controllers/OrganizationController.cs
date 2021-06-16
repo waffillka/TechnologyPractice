@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,9 +28,9 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrganizations()
+        public async Task<IActionResult> GetOrganizations([FromQuery] OrganizationParameters organizationParameters)
         {
-            var organizations = await _repository.Organizations.GetAllOrganizationsAsync(false);
+            var organizations = await _repository.Organizations.GetAllOrganizationsAsync(false, organizationParameters);
             var organizationsDto = _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
 
             return Ok(organizationsDto);

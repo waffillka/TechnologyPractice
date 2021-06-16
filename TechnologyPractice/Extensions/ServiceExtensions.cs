@@ -38,5 +38,8 @@ namespace TechnologyPractice.Extensions
 
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+        public static void ConfigureEmailService(this IServiceCollection services) =>
+            services.AddScoped<IEmailService, EmailService.EmailService>();
     }
 }
