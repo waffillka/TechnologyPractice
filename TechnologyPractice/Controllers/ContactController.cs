@@ -30,9 +30,9 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetContactsFormOrganization(Guid organizationId, [FromQuery] ContactParameters contactParameters)
+        public async Task<IActionResult> GetContactsFormOrganization(Guid organizationId, [FromQuery] ContactParameters parameters)
         {
-            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, false);
+            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, parameters, false);
 
             if (organization == null)
             {
@@ -40,17 +40,17 @@ namespace TechnologyPractice.Controllers
                 return NotFound();
             }
 
-            var contacts = await _repository.Contacts.GetContactsAsync(organizationId, contactParameters, false);
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(contacts.MetaData));
+            var contacts = await _repository.Contacts.GetContactsAsync(organizationId, parameters, false);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(parameters.MetaData));
             var contactsDto = _mapper.Map<IEnumerable<ContactDto>>(contacts);
 
             return Ok(contactsDto);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetContactFormOrganizationById(Guid organizationId, Guid id)
+        public async Task<IActionResult> GetContactFormOrganizationById(Guid organizationId, Guid id, [FromQuery] ContactParameters parameters)
         {
-            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, false);
+            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, parameters, false);
 
             if (organization == null)
             {
@@ -58,7 +58,7 @@ namespace TechnologyPractice.Controllers
                 return NotFound();
             }
 
-            var contact = await _repository.Contacts.GetContactByIdAsync(organizationId, id, false);
+            var contact = await _repository.Contacts.GetContactByIdAsync(organizationId, id, parameters, false);
             if (contact == null)
             {
                 _logger.LogInfo($"Contact with id: {organizationId} doesn't exist in the database.");
@@ -71,9 +71,9 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpPost("sendEmail/{id}")]
-        public async Task<IActionResult> SendEmail(Guid organizationId, Guid id)
+        public async Task<IActionResult> SendEmail(Guid organizationId, Guid id, [FromQuery] ContactParameters parameters)
         {
-            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, false);
+            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, parameters, false);
 
             if (organization == null)
             {
@@ -81,7 +81,7 @@ namespace TechnologyPractice.Controllers
                 return NotFound();
             }
 
-            var contact = await _repository.Contacts.GetContactByIdAsync(organizationId, id, true);
+            var contact = await _repository.Contacts.GetContactByIdAsync(organizationId, id, parameters, true);
             if (contact == null)
             {
                 _logger.LogInfo($"Contact with id: {organizationId} doesn't exist in the database.");

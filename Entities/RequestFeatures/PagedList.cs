@@ -14,10 +14,10 @@ namespace Entities.RequestFeatures
         {
             MetaData = new MetaData
             {
-                TotalCount = count,
+                //TotalCount = count,
                 PageSize = pageSize,
                 CurrentPage = pageNumber,
-                TotalPages = (int)Math.Ceiling(count / (double)pageSize)
+                //TotalPages = (int)Math.Ceiling(count / (double)pageSize)
             };
 
             AddRange(items);

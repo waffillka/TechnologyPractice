@@ -18,17 +18,17 @@ namespace Repository
         {
         }
 
-        public async Task<PagedList<Contact>> GetContactsAsync(Guid organizationId, ContactParameters contactParameters, bool trackChanges)
+        public async Task<IEnumerable<Contact>> GetContactsAsync(Guid organizationId, ContactParameters contactParameters, bool trackChanges)
         {
-            var contact = await FindByCondition(x => x.OrganizationId.Equals(organizationId), trackChanges)
+            var contact = await FindByCondition(x => x.OrganizationId.Equals(organizationId), contactParameters, trackChanges)
             .OrderBy(x => x.LastName)
             .ToListAsync();
 
             return PagedList<Contact>.ToPagedList(contact, contactParameters.PageNumber, contactParameters.PageSize);
         }
 
-        public async Task<Contact> GetContactByIdAsync(Guid organizationId, Guid id, bool trackChanges) =>
-           await FindByCondition(x => x.OrganizationId.Equals(organizationId) && x.Id.Equals(id), trackChanges)
+        public async Task<Contact> GetContactByIdAsync(Guid organizationId, Guid id, ContactParameters contactParameters, bool trackChanges) =>
+           await FindByCondition(x => x.OrganizationId.Equals(organizationId) && x.Id.Equals(id), contactParameters, trackChanges)
            .FirstOrDefaultAsync();
     }
 }

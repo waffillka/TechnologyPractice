@@ -28,18 +28,18 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrganizations([FromQuery] OrganizationParameters organizationParameters)
+        public async Task<IActionResult> GetOrganizations([FromQuery] OrganizationParameters parameters)
         {
-            var organizations = await _repository.Organizations.GetAllOrganizationsAsync(false, organizationParameters);
+            var organizations = await _repository.Organizations.GetAllOrganizationsAsync(false, parameters);
             var organizationsDto = _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
 
             return Ok(organizationsDto);
         }
 
         [HttpGet("{id}", Name = "OrganizationId")]
-        public async Task<IActionResult> GetOrganization(Guid id)
+        public async Task<IActionResult> GetOrganization(Guid id, OrganizationParameters parameters)
         {
-            var organization = await _repository.Organizations.GetOrganizationAsync(id, false);
+            var organization = await _repository.Organizations.GetOrganizationAsync(id, parameters, false);
 
             if (organization == null)
             {

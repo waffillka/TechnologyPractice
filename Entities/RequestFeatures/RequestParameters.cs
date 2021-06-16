@@ -22,5 +22,19 @@ namespace Entities.RequestFeatures
                 _pageSize = (value > maxPageSize) ? maxPageSize : value; 
             } 
         }
-    }
+
+        public MetaData MetaData
+        {
+            get
+            {
+                return new MetaData
+                {
+                    PageSize = _pageSize,
+                    CurrentPage = PageNumber
+                };
+            }
+        }
+
+            
+}
 }

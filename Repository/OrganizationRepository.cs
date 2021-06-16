@@ -18,17 +18,12 @@ namespace Repository
         {
         }
 
-        public async Task<PagedList<Organization>> GetAllOrganizationsAsync(bool trackChenges, OrganizationParameters organizationParameters)
-        {
-            var organization = await FindAll(trackChenges)
-            .OrderBy(x => x.Name)
+        public async Task<IEnumerable<Organization>> GetAllOrganizationsAsync(bool trackChenges, RequestParameters organizationParameters) =>
+            await FindAll(organizationParameters, trackChenges)
             .ToListAsync();
 
-            return PagedList<Organization>.ToPagedList(organization, organizationParameters.PageNumber, organizationParameters.PageSize);
-        }
-
-        public async Task<Organization> GetOrganizationAsync(Guid organizationId, bool trackChenges) =>
-           await FindByCondition(x => x.Id.Equals(organizationId), trackChenges)
+        public async Task<Organization> GetOrganizationAsync(Guid organizationId, RequestParameters organizationParameters, bool trackChenges) =>
+           await FindByCondition(x => x.Id.Equals(organizationId), organizationParameters, trackChenges)
            .SingleOrDefaultAsync();
 
     }

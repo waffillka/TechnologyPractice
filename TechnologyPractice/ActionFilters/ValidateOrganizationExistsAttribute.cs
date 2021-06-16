@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -23,7 +24,8 @@ namespace TechnologyPractice.ActionFilters
         {
             var trackChanges = context.HttpContext.Request.Method.Equals("PUT");
             var id = (Guid)context.ActionArguments["id"];
-            var organization = await _repository.Organizations.GetOrganizationAsync(id, trackChanges);
+            var parameters = (RequestParameters)context.ActionArguments["parameters"];
+            var organization = await _repository.Organizations.GetOrganizationAsync(id, parameters, trackChanges);
 
             if (organization == null)
             {

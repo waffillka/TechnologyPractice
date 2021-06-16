@@ -10,7 +10,7 @@ namespace Contracts
 {
     public interface IOrganizationRepository
     {
-        Task<PagedList<Organization>> GetAllOrganizationsAsync(bool trackChenges, OrganizationParameters organizationParameters);
-        Task<Organization> GetOrganizationAsync(Guid organizationId, bool trackChenges);
+        Task<IEnumerable<Organization>> GetAllOrganizationsAsync(bool trackChenges, RequestParameters organizationParameters);
+        Task<Organization> GetOrganizationAsync(Guid organizationId, RequestParameters organizationParameters, bool trackChenges);
     }
 }
