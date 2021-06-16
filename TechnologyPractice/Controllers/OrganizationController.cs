@@ -65,5 +65,16 @@ namespace TechnologyPractice.Controllers
 
             return CreatedAtRoute("OrganizationById", new { id = organizationToReturn.Id }, organizationToReturn);
         }
+
+        [HttpDelete("{id}")]
+        [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
+        public async Task<IActionResult> DeleteOrganizationById(Guid id)
+        {
+            var organization = HttpContext.Items["organization"] as Organization;
+            _repository.Organizations.DeleteOrganization(organization);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
     }
 }
