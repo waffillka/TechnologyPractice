@@ -49,7 +49,8 @@ namespace EmailService
 
         public async Task SendAsync(string email, string name, string topic, string message)
         {
-            
+            var messageContext = new MessageContext(email, name, topic, message);
+            await SendAsync(messageContext);
         }
     }
 }

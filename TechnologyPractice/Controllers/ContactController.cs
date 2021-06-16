@@ -88,15 +88,9 @@ namespace TechnologyPractice.Controllers
                 return NotFound();
             }
 
-            MessageContext message = new MessageContext();
-            message.EmailTo = contact.Email;
-            message.FullName = $"{contact.FirstName} {contact.LastName}";
-            message.Topic = "Test";
-            message.Message = $"Your Id id {contact.Id}";
-
             IEmailService email = new EmailService.EmailService();
 
-            await email.SendAsync(message);
+            await email.SendAsync(contact.Email, $"{contact.FirstName} {contact.LastName}", "Test", $"Your Id is {contact.Id}");
 
             contact.CountLetters = contact.CountLetters++;
             await _repository.SaveAsync();
