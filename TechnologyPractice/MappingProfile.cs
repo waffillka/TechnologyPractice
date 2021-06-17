@@ -15,6 +15,7 @@ namespace TechnologyPractice
             CreateMap<Organization, OrganizationDto>();
             CreateMap<Contact, ContactDto>();
             CreateMap<Organization, OrganizationCreationDto>();
+            CreateMap<OrganizationCreationDto, Organization>();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpGet("{id}", Name = "OrganizationId")]
-        public async Task<IActionResult> GetOrganization(Guid id, OrganizationParameters parameters)
+        public async Task<IActionResult> GetOrganization(Guid id, [FromQuery] OrganizationParameters parameters)
         {
             var organization = await _repository.Organizations.GetOrganizationAsync(id, parameters, false);
 
@@ -54,7 +54,7 @@ namespace TechnologyPractice.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> PostCreateOrganization([FromBody] OrganizationCreationDto organization)
+        public async Task<IActionResult> PostCreateOrganization([FromBody] OrganizationCreationDto organization, [FromQuery] OrganizationParameters parameters)
         {
             var organizationEntity = _mapper.Map<Organization>(organization);
 
@@ -68,10 +68,22 @@ namespace TechnologyPractice.Controllers
 
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
-        public async Task<IActionResult> DeleteOrganizationById(Guid id)
+        public async Task<IActionResult> DeleteOrganizationById(Guid id, [FromQuery] OrganizationParameters parameters)
         {
             var organization = HttpContext.Items["organization"] as Organization;
             _repository.Organizations.DeleteOrganization(organization);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
+        public async Task<IActionResult> PutUpdateOrganization(Guid id, [FromQuery] OrganizationParameters parameters, [FromBody] OrganizationCreationDto organization)
+        {
+            var organizationDb = HttpContext.Items["organization"] as Organization;
+            _mapper.Map(organization, organizationDb);
             await _repository.SaveAsync();
 
             return NoContent();
