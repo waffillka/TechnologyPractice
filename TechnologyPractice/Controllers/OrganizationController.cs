@@ -4,6 +4,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -84,6 +85,23 @@ namespace TechnologyPractice.Controllers
         {
             var organizationDb = HttpContext.Items["organization"] as Organization;
             _mapper.Map(organization, organizationDb);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
+        public async Task<IActionResult> PatchUpdateOrganization(Guid id, [FromQuery] OrganizationParameters parameters, [FromBody] JsonPatchDocument<OrganizationUpdateDto> patchDoc)
+        {
+            var organizationDb = HttpContext.Items["organization"] as Organization;
+
+            var organizationToPatch = _mapper.Map<OrganizationUpdateDto>(organizationDb);
+            patchDoc.ApplyTo(organizationToPatch);
+
+            _mapper.Map(organizationToPatch, organizationDb);
+
             await _repository.SaveAsync();
 
             return NoContent();

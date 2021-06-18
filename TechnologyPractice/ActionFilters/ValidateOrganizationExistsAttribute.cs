@@ -22,7 +22,9 @@ namespace TechnologyPractice.ActionFilters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var trackChanges = context.HttpContext.Request.Method.Equals("PUT");
+            var method = context.HttpContext.Request.Method;
+            var trackChanges = (method.Equals("PUT") || method.Equals("PATCH")) ? true : false;
+
             var id = (Guid)context.ActionArguments["id"];
             var parameters = (RequestParameters)context.ActionArguments["parameters"];
             var organization = await _repository.Organizations.GetOrganizationAsync(id, parameters, trackChanges);
