@@ -18,7 +18,7 @@ namespace Repository
         {
         }
 
-        public async Task<IEnumerable<Contact>> GetContactsAsync(Guid organizationId, ContactParameters contactParameters, bool trackChanges)
+        public async Task<IEnumerable<Contact>> GetContactsAsync(Guid organizationId, RequestParameters contactParameters, bool trackChanges)
         {
             var contact = await FindByCondition(x => x.OrganizationId.Equals(organizationId), contactParameters, trackChanges)
             .OrderBy(x => x.LastName)
@@ -27,7 +27,7 @@ namespace Repository
             return PagedList<Contact>.ToPagedList(contact, contactParameters.PageNumber, contactParameters.PageSize);
         }
 
-        public async Task<Contact> GetContactByIdAsync(Guid organizationId, Guid id, ContactParameters contactParameters, bool trackChanges) =>
+        public async Task<Contact> GetContactByIdAsync(Guid organizationId, Guid id, RequestParameters contactParameters, bool trackChanges) =>
            await FindByCondition(x => x.OrganizationId.Equals(organizationId) && x.Id.Equals(id), contactParameters, trackChanges)
            .FirstOrDefaultAsync();
     }

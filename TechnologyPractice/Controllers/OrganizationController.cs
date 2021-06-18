@@ -39,13 +39,13 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpGet("{id}", Name = "OrganizationId")]
-        public async Task<IActionResult> GetOrganization(Guid id, [FromQuery] OrganizationParameters parameters)
+        public async Task<IActionResult> GetOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters)
         {
-            var organization = await _repository.Organizations.GetOrganizationAsync(id, parameters, false);
+            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, parameters, false);
 
             if (organization == null)
             {
-                _logger.LogInfo($"Organization with id: {id} doesn't exist in the database.");
+                _logger.LogInfo($"Organization with id: {organizationId} doesn't exist in the database.");
                 return NotFound();
             }
             var organizationDto = _mapper.Map<OrganizationDto>(organization);

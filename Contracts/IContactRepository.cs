@@ -10,7 +10,7 @@ namespace Contracts
 {
     public interface IContactRepository
     {
-        Task<IEnumerable<Contact>> GetContactsAsync(Guid organizationId, ContactParameters contactParameters, bool trackChanges);
-        Task<Contact> GetContactByIdAsync(Guid organizationId, Guid id, ContactParameters contactParameters,  bool trackChanges);
+        Task<IEnumerable<Contact>> GetContactsAsync(Guid organizationId, RequestParameters contactParameters, bool trackChanges);
+        Task<Contact> GetContactByIdAsync(Guid organizationId, Guid id, RequestParameters contactParameters,  bool trackChanges);
     }
 }

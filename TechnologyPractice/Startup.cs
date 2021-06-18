@@ -42,6 +42,7 @@ namespace TechnologyPractice
             services.ConfigureEmailService();
 
             services.AddScoped<ValidateOrganizationExistsAttribute>();
+            services.AddScoped<ValidateContactExistsAttribute>();
             services.AddScoped<ValidationFilterAttribute>();
 
             services.AddAutoMapper(typeof(Startup));

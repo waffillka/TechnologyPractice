@@ -3,6 +3,7 @@ using Contracts;
 using EmailService;
 using Entities.DataTransferObjects;
 using Entities.EmailServiceModels;
+using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechnologyPractice.ActionFilters;
 
 namespace TechnologyPractice.Controllers
 {
@@ -48,23 +50,10 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpGet("{id}")]
+        [ServiceFilter(typeof(ValidateContactExistsAttribute))]
         public async Task<IActionResult> GetContactFormOrganizationById(Guid organizationId, Guid id, [FromQuery] ContactParameters parameters)
         {
-            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, parameters, false);
-
-            if (organization == null)
-            {
-                _logger.LogInfo($"Organization with id: {organizationId} doesn't exist in the database.");
-                return NotFound();
-            }
-
-            var contact = await _repository.Contacts.GetContactByIdAsync(organizationId, id, parameters, false);
-            if (contact == null)
-            {
-                _logger.LogInfo($"Contact with id: {organizationId} doesn't exist in the database.");
-                return NotFound();
-            }
-
+            var contact = HttpContext.Items["contact"] as Contact;
             var contactDto = _mapper.Map<ContactDto>(contact);
 
             return Ok(contactDto);
