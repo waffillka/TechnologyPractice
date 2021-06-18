@@ -6,6 +6,7 @@ using Entities.EmailServiceModels;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -91,8 +92,14 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpPut("{contactId}")]
-        public async Task<IActionResult> PutUpdateContact(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateContactExistsAttribute))]
+        public async Task<IActionResult> PutUpdateContact(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters, [FromBody] ContactCreationDto contact)
         {
+            var contactBd = HttpContext.Items["contact"] as Contact;
+            _mapper.Map(contact, contactBd);
+            await _repository.SaveAsync();
+
             return NotFound();
         }
 
@@ -103,6 +110,23 @@ namespace TechnologyPractice.Controllers
             var contact = HttpContext.Items["contact"] as Contact;
 
             _repository.Contacts.DeleteContact(contact);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{contactId}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateContactExistsAttribute))]
+        public async Task<IActionResult> PatchUpdateContact(Guid organizationId, Guid contactId, [FromQuery] OrganizationParameters parameters, [FromBody] JsonPatchDocument<ContactUpdateDto> patchDoc)
+        {
+            var contactDb = HttpContext.Items["contact"] as Contact;
+
+            var contactToPatch = _mapper.Map<ContactUpdateDto>(contactDb);
+            patchDoc.ApplyTo(contactToPatch);
+
+            _mapper.Map(contactToPatch, contactDb);
+
             await _repository.SaveAsync();
 
             return NoContent();
