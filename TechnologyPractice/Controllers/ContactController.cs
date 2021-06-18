@@ -49,9 +49,9 @@ namespace TechnologyPractice.Controllers
             return Ok(contactsDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{contactId}")]
         [ServiceFilter(typeof(ValidateContactExistsAttribute))]
-        public async Task<IActionResult> GetContactFormOrganizationById(Guid organizationId, Guid id, [FromQuery] ContactParameters parameters)
+        public async Task<IActionResult> GetContactFormOrganizationById(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
         {
             var contact = HttpContext.Items["contact"] as Contact;
             var contactDto = _mapper.Map<ContactDto>(contact);
@@ -59,23 +59,11 @@ namespace TechnologyPractice.Controllers
             return Ok(contactDto);
         }
 
-        [HttpPost("sendEmail/{id}")]
-        public async Task<IActionResult> SendEmail(Guid organizationId, Guid id, [FromQuery] ContactParameters parameters)
+        [HttpPost("sendEmail/{contactId}")]
+        [ServiceFilter(typeof(ValidateContactExistsAttribute))]
+        public async Task<IActionResult> SendEmail(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
         {
-            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, parameters, false);
-
-            if (organization == null)
-            {
-                _logger.LogInfo($"Organization with id: {organizationId} doesn't exist in the database.");
-                return NotFound();
-            }
-
-            var contact = await _repository.Contacts.GetContactByIdAsync(organizationId, id, parameters, true);
-            if (contact == null)
-            {
-                _logger.LogInfo($"Contact with id: {organizationId} doesn't exist in the database.");
-                return NotFound();
-            }
+            var contact = HttpContext.Items["contact"] as Contact;
 
             IEmailService email = new EmailService.EmailService();
 
@@ -85,6 +73,21 @@ namespace TechnologyPractice.Controllers
             await _repository.SaveAsync();
 
             return Ok("message sent");
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
+        public async Task<IActionResult> PostCreateContact(Guid organizationId, [FromBody] ContactCreationDto contact, [FromQuery] ContactParameters parameters)
+        {
+            var contactEntity = _mapper.Map<Contact>(contact);
+
+            _repository.Contacts.CreateContact(organizationId, contactEntity);
+            await _repository.SaveAsync();
+
+            var contactToReturn = _mapper.Map<ContactDto>(contactEntity);
+
+            return CreatedAtRoute("OrganizationById", new { id = contactToReturn.Id }, contactToReturn);
         }
     }
 }

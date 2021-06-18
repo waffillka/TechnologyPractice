@@ -12,5 +12,7 @@ namespace Contracts
     {
         Task<IEnumerable<Contact>> GetContactsAsync(Guid organizationId, RequestParameters contactParameters, bool trackChanges);
         Task<Contact> GetContactByIdAsync(Guid organizationId, Guid id, RequestParameters contactParameters,  bool trackChanges);
+        void CreateContact(Guid organizationId, Contact contact);
+        void DeleteContact(Contact contact);
     }
 }

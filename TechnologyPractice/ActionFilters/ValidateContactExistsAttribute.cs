@@ -36,7 +36,7 @@ namespace TechnologyPractice.ActionFilters
                 context.Result = new NotFoundResult(); return;
             }
 
-            var id = (Guid)context.ActionArguments["id"];
+            var id = (Guid)context.ActionArguments["contactId"];
             var contact = await _repository.Contacts.GetContactByIdAsync(organizationId, id, parameters, trackChanges);
 
             if (contact == null)

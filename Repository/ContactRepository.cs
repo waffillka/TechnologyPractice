@@ -30,5 +30,13 @@ namespace Repository
         public async Task<Contact> GetContactByIdAsync(Guid organizationId, Guid id, RequestParameters contactParameters, bool trackChanges) =>
            await FindByCondition(x => x.OrganizationId.Equals(organizationId) && x.Id.Equals(id), contactParameters, trackChanges)
            .FirstOrDefaultAsync();
+
+        public void CreateContact(Guid organizationId, Contact contact)
+        {
+            contact.OrganizationId = organizationId;
+            Create(contact);
+        }
+
+        public void DeleteContact(Contact contact) => Delete(contact);
     }
 }

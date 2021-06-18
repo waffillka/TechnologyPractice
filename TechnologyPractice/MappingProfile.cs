@@ -14,8 +14,12 @@ namespace TechnologyPractice
         {
             CreateMap<Organization, OrganizationDto>();
             CreateMap<Contact, ContactDto>();
+            CreateMap<ContactCreationDto, Contact>();
+            CreateMap<Contact, ContactCreationDto>();
+            CreateMap<ContactUpdateDto, Contact>().ReverseMap();
+
             CreateMap<Organization, OrganizationCreationDto>();
-            CreateMap<OrganizationCreationDto, Organization>();
+            CreateMap<OrganizationCreationDto, Organization>();           
             CreateMap<OrganizationUpdateDto, Organization>().ReverseMap();
         }
     }

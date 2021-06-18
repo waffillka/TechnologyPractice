@@ -38,16 +38,11 @@ namespace TechnologyPractice.Controllers
             return Ok(organizationsDto);
         }
 
-        [HttpGet("{id}", Name = "OrganizationId")]
+        [HttpGet("{organizationId}", Name = "organizationId")]
+        [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
         public async Task<IActionResult> GetOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters)
         {
-            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, parameters, false);
-
-            if (organization == null)
-            {
-                _logger.LogInfo($"Organization with id: {organizationId} doesn't exist in the database.");
-                return NotFound();
-            }
+            var organization = HttpContext.Items["organization"] as Organization;
             var organizationDto = _mapper.Map<OrganizationDto>(organization);
 
             return Ok(organizationDto);
@@ -67,9 +62,9 @@ namespace TechnologyPractice.Controllers
             return CreatedAtRoute("OrganizationById", new { id = organizationToReturn.Id }, organizationToReturn);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{organizationId}")]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
-        public async Task<IActionResult> DeleteOrganizationById(Guid id, [FromQuery] OrganizationParameters parameters)
+        public async Task<IActionResult> DeleteOrganizationById(Guid organizationId, [FromQuery] OrganizationParameters parameters)
         {
             var organization = HttpContext.Items["organization"] as Organization;
             _repository.Organizations.DeleteOrganization(organization);
@@ -78,10 +73,10 @@ namespace TechnologyPractice.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{organizationId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
-        public async Task<IActionResult> PutUpdateOrganization(Guid id, [FromQuery] OrganizationParameters parameters, [FromBody] OrganizationCreationDto organization)
+        public async Task<IActionResult> PutUpdateOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters, [FromBody] OrganizationCreationDto organization)
         {
             var organizationDb = HttpContext.Items["organization"] as Organization;
             _mapper.Map(organization, organizationDb);
@@ -90,10 +85,10 @@ namespace TechnologyPractice.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{organizationId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
-        public async Task<IActionResult> PatchUpdateOrganization(Guid id, [FromQuery] OrganizationParameters parameters, [FromBody] JsonPatchDocument<OrganizationUpdateDto> patchDoc)
+        public async Task<IActionResult> PatchUpdateOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters, [FromBody] JsonPatchDocument<OrganizationUpdateDto> patchDoc)
         {
             var organizationDb = HttpContext.Items["organization"] as Organization;
 
