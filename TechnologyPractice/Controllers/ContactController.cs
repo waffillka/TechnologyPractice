@@ -89,5 +89,23 @@ namespace TechnologyPractice.Controllers
 
             return CreatedAtRoute("OrganizationById", new { id = contactToReturn.Id }, contactToReturn);
         }
+
+        [HttpPut("{contactId}")]
+        public async Task<IActionResult> PutUpdateContact(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
+        {
+            return NotFound();
+        }
+
+        [HttpDelete("{contactId}")]
+        [ServiceFilter(typeof(ValidateContactExistsAttribute))]
+        public async Task<IActionResult> DeleteContact(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
+        {
+            var contact = HttpContext.Items["contact"] as Contact;
+
+            _repository.Contacts.DeleteContact(contact);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
     }
 }
