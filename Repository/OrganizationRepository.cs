@@ -18,6 +18,14 @@ namespace Repository
         {
         }
 
+        public void CreateCollectionOrganizations(IEnumerable<Organization> organizations)
+        {
+            foreach(var organization in organizations)
+            {
+                CreateOrganization(organization);
+            }
+        }
+
         public void CreateOrganization(Organization organization) => Create(organization);
 
         public void DeleteOrganization(Organization organization) => Delete(organization);

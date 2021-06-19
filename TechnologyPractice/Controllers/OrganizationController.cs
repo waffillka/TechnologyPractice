@@ -62,6 +62,16 @@ namespace TechnologyPractice.Controllers
             return CreatedAtRoute("OrganizationById", new { id = organizationToReturn.Id }, organizationToReturn);
         }
 
+        [HttpPost("collection")]
+        public async Task<IActionResult> PostCreateCollectionOrganizations([FromBody] IEnumerable<OrganizationCreationDto> organization, [FromQuery] OrganizationParameters parameters)
+        {
+            var organizationsEntity = _mapper.Map<IEnumerable<Organization>>(organization);
+            _repository.Organizations.CreateCollectionOrganizations(organizationsEntity);
+            await _repository.SaveAsync();
+
+            return NoContent();            
+        }
+
         [HttpDelete("{organizationId}")]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
         public async Task<IActionResult> DeleteOrganizationById(Guid organizationId, [FromQuery] OrganizationParameters parameters)
