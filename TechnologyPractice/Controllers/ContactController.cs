@@ -52,7 +52,7 @@ namespace TechnologyPractice.Controllers
 
         [HttpGet("{contactId}")]
         [ServiceFilter(typeof(ValidateContactExistsAttribute))]
-        public async Task<IActionResult> GetContactFormOrganizationById(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
+        public IActionResult GetContactFormOrganizationById(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
         {
             var contact = HttpContext.Items["contact"] as Contact;
             var contactDto = _mapper.Map<ContactDto>(contact);

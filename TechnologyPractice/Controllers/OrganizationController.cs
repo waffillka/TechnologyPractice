@@ -40,7 +40,7 @@ namespace TechnologyPractice.Controllers
 
         [HttpGet("{organizationId}", Name = "organizationId")]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
-        public async Task<IActionResult> GetOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters)
+        public IActionResult GetOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters)
         {
             var organization = HttpContext.Items["organization"] as Organization;
             var organizationDto = _mapper.Map<OrganizationDto>(organization);
