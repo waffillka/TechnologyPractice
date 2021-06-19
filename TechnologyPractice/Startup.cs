@@ -44,6 +44,7 @@ namespace TechnologyPractice
             services.AddScoped<ValidateOrganizationExistsAttribute>();
             services.AddScoped<ValidateContactExistsAttribute>();
             services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidateCollectionOrganizationsExistsAttribute>();
 
             services.AddAutoMapper(typeof(Startup));
             services.Configure<ApiBehaviorOptions>(options =>

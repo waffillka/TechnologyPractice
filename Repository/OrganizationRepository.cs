@@ -38,5 +38,8 @@ namespace Repository
            await FindByCondition(x => x.Id.Equals(organizationId), organizationParameters, trackChenges)
            .SingleOrDefaultAsync();
 
+        public async Task<IEnumerable<Organization>> GetOrganizationsByIdsAsync(IEnumerable<Guid> organizationIds, RequestParameters organizationParameters, bool trackChenges) =>
+            await FindByCondition(x => organizationIds.Contains(x.Id), organizationParameters, trackChenges)
+            .ToListAsync();
     }
 }

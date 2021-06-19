@@ -6,11 +6,13 @@ using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TechnologyPractice.ActionFilters;
+using TechnologyPractice.ModelBinders;
 
 namespace TechnologyPractice.Controllers
 {
@@ -48,6 +50,16 @@ namespace TechnologyPractice.Controllers
             return Ok(organizationDto);
         }
 
+        [HttpGet("collection/{organizationIds}")]
+        [ServiceFilter(typeof(ValidateCollectionOrganizationsExistsAttribute))]
+        public IActionResult GetOrganization([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> organizationIds, [FromQuery] OrganizationParameters parameters)
+        {
+            var organizations = HttpContext.Items["organizations"] as Organization;
+            var organizationsDto = _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
+
+            return Ok(organizationsDto);
+        }
+
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> PostCreateOrganization([FromBody] OrganizationCreationDto organization, [FromQuery] OrganizationParameters parameters)
@@ -63,9 +75,10 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpPost("collection")]
-        public async Task<IActionResult> PostCreateCollectionOrganizations([FromBody] IEnumerable<OrganizationCreationDto> organization, [FromQuery] OrganizationParameters parameters)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> PostCreateCollectionOrganizations([FromBody] IEnumerable<OrganizationCreationDto> organizations, [FromQuery] OrganizationParameters parameters)
         {
-            var organizationsEntity = _mapper.Map<IEnumerable<Organization>>(organization);
+            var organizationsEntity = _mapper.Map< IEnumerable<Organization>>(organizations);
             _repository.Organizations.CreateCollectionOrganizations(organizationsEntity);
             await _repository.SaveAsync();
 
