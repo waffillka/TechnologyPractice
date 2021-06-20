@@ -91,6 +91,19 @@ namespace TechnologyPractice.Controllers
             return CreatedAtRoute("OrganizationById", new { id = contactToReturn.Id }, contactToReturn);
         }
 
+        [HttpPost("collection")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
+        public async Task<IActionResult> PostCreateCollectionContacts(Guid organizationId, [FromBody] IEnumerable<ContactCreationDto> contacts, [FromQuery] ContactParameters parameters)
+        {
+            var contactEntity = _mapper.Map<IEnumerable<Contact>>(contacts);
+
+            _repository.Contacts.CreateCollectionContacts(organizationId, contactEntity);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
+
         [HttpPut("{contactId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateContactExistsAttribute))]

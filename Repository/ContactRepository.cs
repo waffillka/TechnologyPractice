@@ -38,5 +38,13 @@ namespace Repository
         }
 
         public void DeleteContact(Contact contact) => Delete(contact);
+
+        public void CreateCollectionContacts(Guid organizationId, IEnumerable<Contact> contacts)
+        {
+            foreach(var contact in contacts)
+            {
+                CreateContact(organizationId, contact);
+            }
+        }
     }
 }
