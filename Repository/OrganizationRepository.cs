@@ -18,6 +18,14 @@ namespace Repository
         {
         }
 
+        public void CreateCollectionOrganizations(IEnumerable<Organization> organizations)
+        {
+            foreach(var organization in organizations)
+            {
+                CreateOrganization(organization);
+            }
+        }
+
         public void CreateOrganization(Organization organization) => Create(organization);
 
         public void DeleteOrganization(Organization organization) => Delete(organization);
@@ -30,5 +38,8 @@ namespace Repository
            await FindByCondition(x => x.Id.Equals(organizationId), organizationParameters, trackChenges)
            .SingleOrDefaultAsync();
 
+        public async Task<IEnumerable<Organization>> GetOrganizationsByIdsAsync(IEnumerable<Guid> organizationIds, RequestParameters organizationParameters, bool trackChenges) =>
+            await FindByCondition(x => organizationIds.Contains(x.Id), organizationParameters, trackChenges)
+            .ToListAsync();
     }
 }
