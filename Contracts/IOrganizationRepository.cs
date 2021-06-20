@@ -10,9 +10,9 @@ namespace Contracts
 {
     public interface IOrganizationRepository
     {
-        Task<IEnumerable<Organization>> GetAllOrganizationsAsync(bool trackChenges, RequestParameters organizationParameters);
-        Task<Organization> GetOrganizationAsync(Guid organizationId, RequestParameters organizationParameters, bool trackChenges);
-        Task<IEnumerable<Organization>> GetOrganizationsByIdsAsync(IEnumerable<Guid> organizationIds, RequestParameters organizationParameters, bool trackChenges);
+        Task<IEnumerable<Organization>> GetAllOrganizationsAsync(bool trackChenges, OrganizationParameters organizationParameters);
+        Task<Organization> GetOrganizationAsync(Guid organizationId, OrganizationParameters organizationParameters, bool trackChenges);
+        Task<IEnumerable<Organization>> GetOrganizationsByIdsAsync(IEnumerable<Guid> organizationIds, OrganizationParameters organizationParameters, bool trackChenges);
         void CreateOrganization(Organization organization);
         void CreateCollectionOrganizations(IEnumerable<Organization> organizations);
         void DeleteOrganization(Organization organization);

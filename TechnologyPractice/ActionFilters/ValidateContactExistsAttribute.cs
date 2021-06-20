@@ -28,7 +28,7 @@ namespace TechnologyPractice.ActionFilters
             var organizationId = (Guid)context.ActionArguments["organizationId"];
             var parameters = (ContactParameters)context.ActionArguments["parameters"];
 
-            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, parameters, trackChanges);
+            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, new OrganizationParameters(), trackChanges);
 
             if (organization == null)
             {

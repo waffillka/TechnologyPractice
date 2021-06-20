@@ -35,7 +35,7 @@ namespace TechnologyPractice.Controllers
         [HttpGet]
         public async Task<IActionResult> GetContactsFormOrganization(Guid organizationId, [FromQuery] ContactParameters parameters)
         {
-            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, parameters, false);
+            var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, new OrganizationParameters(), false);
 
             if (organization == null)
             {

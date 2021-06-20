@@ -26,7 +26,7 @@ namespace TechnologyPractice.ActionFilters
             var trackChanges = (method.Equals("PUT") || method.Equals("PATCH")) ? true : false;
 
             var organizationId = (IEnumerable<Guid>)context.ActionArguments["organizationIds"];
-            var parameters = (RequestParameters)context.ActionArguments["parameters"];
+            var parameters = (OrganizationParameters)context.ActionArguments["parameters"];
 
             var organizations = await _repository.Organizations.GetOrganizationsByIdsAsync(organizationId, parameters, trackChanges);
 

@@ -30,15 +30,15 @@ namespace Repository
 
         public void DeleteOrganization(Organization organization) => Delete(organization);
 
-        public async Task<IEnumerable<Organization>> GetAllOrganizationsAsync(bool trackChenges, RequestParameters organizationParameters) =>
-            await FindAll(organizationParameters, trackChenges)
+        public async Task<IEnumerable<Organization>> GetAllOrganizationsAsync(bool trackChenges, OrganizationParameters organizationParameters) =>
+            await FindByCondition(x => x.Name.Contains(organizationParameters.SearchTerm), organizationParameters, trackChenges)
             .ToListAsync();
 
-        public async Task<Organization> GetOrganizationAsync(Guid organizationId, RequestParameters organizationParameters, bool trackChenges) =>
+        public async Task<Organization> GetOrganizationAsync(Guid organizationId, OrganizationParameters organizationParameters, bool trackChenges) =>
            await FindByCondition(x => x.Id.Equals(organizationId), organizationParameters, trackChenges)
            .SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<Organization>> GetOrganizationsByIdsAsync(IEnumerable<Guid> organizationIds, RequestParameters organizationParameters, bool trackChenges) =>
+        public async Task<IEnumerable<Organization>> GetOrganizationsByIdsAsync(IEnumerable<Guid> organizationIds, OrganizationParameters organizationParameters, bool trackChenges) =>
             await FindByCondition(x => organizationIds.Contains(x.Id), organizationParameters, trackChenges)
             .ToListAsync();
     }
