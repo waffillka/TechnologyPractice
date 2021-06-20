@@ -20,7 +20,11 @@ namespace Repository
 
         public async Task<IEnumerable<Contact>> GetContactsAsync(Guid organizationId, ContactParameters contactParameters, bool trackChanges) =>
              await FindByCondition(x => 
-             x.OrganizationId.Equals(organizationId) && x.CountLetters >= contactParameters.CountLettersMin && x.CountLetters < contactParameters.CountLettersMax, contactParameters, trackChanges)
+             x.OrganizationId.Equals(organizationId) && 
+             x.CountLetters >= contactParameters.CountLettersMin && 
+             x.CountLetters < contactParameters.CountLettersMax &&
+             (x.Email.Contains(contactParameters.SearchTerm) || x.FirstName.Contains(contactParameters.SearchTerm) || 
+             x.LastName.Contains(contactParameters.SearchTerm)), contactParameters, trackChanges)
             .OrderBy(x => x.LastName)
             .ToListAsync();
 
