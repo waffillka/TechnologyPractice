@@ -19,6 +19,7 @@ namespace TechnologyPractice.Controllers
 {
     [Route("api/organizations/{organizationId}/contacts")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class ContactController : ControllerBase
     {
         private readonly IRepositoryManager _repository;

@@ -18,6 +18,7 @@ namespace TechnologyPractice.Controllers
 {
     [Route("api/organizations")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class OrganizationController : ControllerBase
     {
         private readonly ILoggerManager _logger;

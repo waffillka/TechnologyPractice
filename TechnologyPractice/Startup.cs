@@ -40,6 +40,10 @@ namespace TechnologyPractice
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.ConfigureEmailService();
+            services.ConfigureSwagger();
+
+            services.AddAuthentication(); 
+            services.ConfigureIdentity();
 
             services.AddScoped<ValidateOrganizationExistsAttribute>();
             services.AddScoped<ValidateContactExistsAttribute>();
@@ -59,10 +63,7 @@ namespace TechnologyPractice
             }).AddNewtonsoftJson()
             .AddXmlDataContractSerializerFormatters();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TechnologyPractice", Version = "v1" });
-            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,11 +72,14 @@ namespace TechnologyPractice
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TechnologyPractice v1"));
+                //app.UseSwagger();
+                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TechnologyPractice v1"));
             }
             app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TechnologyPractice v1"));
 
             app.UseStaticFiles(); 
             app.UseCors("CorsPolicy"); 
@@ -86,6 +90,7 @@ namespace TechnologyPractice
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

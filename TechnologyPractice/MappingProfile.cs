@@ -21,6 +21,8 @@ namespace TechnologyPractice
             CreateMap<Organization, OrganizationCreationDto>();
             CreateMap<OrganizationCreationDto, Organization>();           
             CreateMap<OrganizationUpdateDto, Organization>().ReverseMap();
+
+            CreateMap<UserForRegistrationDto, User>();
         }
     }
 }
