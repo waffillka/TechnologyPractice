@@ -41,6 +41,7 @@ namespace TechnologyPractice
             services.ConfigureRepositoryManager();
             services.ConfigureEmailService();
             services.ConfigureSwagger();
+            services.ConfigureJWT(Configuration);
 
             services.AddAuthentication(); 
             services.ConfigureIdentity();
