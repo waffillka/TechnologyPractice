@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects;
 using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TechnologyPractice
 {
@@ -19,7 +15,7 @@ namespace TechnologyPractice
             CreateMap<ContactUpdateDto, Contact>().ReverseMap();
 
             CreateMap<Organization, OrganizationCreationDto>();
-            CreateMap<OrganizationCreationDto, Organization>();           
+            CreateMap<OrganizationCreationDto, Organization>();
             CreateMap<OrganizationUpdateDto, Organization>().ReverseMap();
 
             CreateMap<UserForRegistrationDto, User>();

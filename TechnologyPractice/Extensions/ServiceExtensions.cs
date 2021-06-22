@@ -13,10 +13,7 @@ using Microsoft.OpenApi.Models;
 using Repository;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TechnologyPractice.Extensions
 {
@@ -39,7 +36,7 @@ namespace TechnologyPractice.Extensions
         public static void ConfigureLoggerService(this IServiceCollection services) =>
             services.AddScoped<ILoggerManager, LoggerManager>();
 
-        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) => 
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<RepositoryContext>(opts =>
             opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("TechnologyPractice")));
 
@@ -59,23 +56,23 @@ namespace TechnologyPractice.Extensions
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            var builder = services.AddIdentityCore<User>(x => 
-            { 
-                x.Password.RequireDigit = true; 
-                x.Password.RequireLowercase = false; 
-                x.Password.RequireUppercase = false; 
-                x.Password.RequireNonAlphanumeric = false; 
-                x.Password.RequiredLength = 10; 
-                x.User.RequireUniqueEmail = true; 
-            }); 
-            
-            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services); 
+            var builder = services.AddIdentityCore<User>(x =>
+            {
+                x.Password.RequireDigit = true;
+                x.Password.RequireLowercase = false;
+                x.Password.RequireUppercase = false;
+                x.Password.RequireNonAlphanumeric = false;
+                x.Password.RequiredLength = 10;
+                x.User.RequireUniqueEmail = true;
+            });
+
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<RepositoryContext>().AddDefaultTokenProviders();
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettings = configuration.GetSection("JwtSettings"); 
+            var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = Environment.GetEnvironmentVariable("SECRET");
 
             services.AddAuthentication(opt =>
@@ -98,5 +95,9 @@ namespace TechnologyPractice.Extensions
                     };
                 });
         }
+
+        public static void ConfigureAuthenticationManager(this IServiceCollection services) =>
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+
     }
 }

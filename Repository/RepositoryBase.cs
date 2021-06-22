@@ -2,12 +2,8 @@
 using Entities;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
-using Repository.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -28,7 +24,7 @@ namespace Repository
             !trackChanges ? RepositoryContext.Set<T>()
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize)
-                .AsNoTracking() 
+                .AsNoTracking()
             : RepositoryContext.Set<T>()
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize);
@@ -46,7 +42,7 @@ namespace Repository
                 .Where(expression)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize)
-                .AsNoTracking() 
+                .AsNoTracking()
             : RepositoryContext.Set<T>()
                 .Where(expression)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)

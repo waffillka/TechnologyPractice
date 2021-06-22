@@ -1,14 +1,10 @@
 ﻿using Contracts;
-using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using MailKit.Net.Smtp;
-using System.Text;
-using System.Threading.Tasks;
 using Entities.EmailServiceModels;
+using MailKit.Net.Smtp;
+using MimeKit;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace EmailService
 {
@@ -16,7 +12,7 @@ namespace EmailService
     {
         public EmailService()
         {
-                    
+
         }
 
         public async Task SendAsync(MessageContext message)

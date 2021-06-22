@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
-using EmailService;
 using Entities.DataTransferObjects;
-using Entities.EmailServiceModels;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TechnologyPractice.ActionFilters;
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -34,7 +33,7 @@ namespace TechnologyPractice.ModelBinders
                 .ToArray();
 
             var guidArray = Array.CreateInstance(genericType, objectArray.Length);
-            objectArray.CopyTo(guidArray, 0); 
+            objectArray.CopyTo(guidArray, 0);
             bindingContext.Model = guidArray;
 
             bindingContext.Result = ModelBindingResult.Success(bindingContext.Model);
