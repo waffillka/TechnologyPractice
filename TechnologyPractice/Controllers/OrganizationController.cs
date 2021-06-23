@@ -3,13 +3,12 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TechnologyPractice.ActionFilters;
 using TechnologyPractice.ModelBinders;
@@ -18,6 +17,7 @@ namespace TechnologyPractice.Controllers
 {
     [Route("api/organizations")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class OrganizationController : ControllerBase
     {
         private readonly ILoggerManager _logger;
@@ -32,6 +32,7 @@ namespace TechnologyPractice.Controllers
         }
 
         [HttpGet]
+        [HttpGet(Name = "GetOrganizations"), Authorize]
         public async Task<IActionResult> GetOrganizations([FromQuery] OrganizationParameters parameters)
         {
             var organizations = await _repository.Organizations.GetAllOrganizationsAsync(false, parameters);
@@ -78,11 +79,11 @@ namespace TechnologyPractice.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> PostCreateCollectionOrganizations([FromBody] IEnumerable<OrganizationCreationDto> organizations, [FromQuery] OrganizationParameters parameters)
         {
-            var organizationsEntity = _mapper.Map< IEnumerable<Organization>>(organizations);
+            var organizationsEntity = _mapper.Map<IEnumerable<Organization>>(organizations);
             _repository.Organizations.CreateCollectionOrganizations(organizationsEntity);
             await _repository.SaveAsync();
 
-            return NoContent();            
+            return NoContent();
         }
 
         [HttpDelete("{organizationId}")]

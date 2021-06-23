@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repository
@@ -19,16 +18,16 @@ namespace Repository
         }
 
         public async Task<IEnumerable<Contact>> GetContactsAsync(Guid organizationId, ContactParameters contactParameters, bool trackChanges) =>
-             await FindByCondition(x => 
-             x.OrganizationId.Equals(organizationId) && 
-             x.CountLetters >= contactParameters.CountLettersMin && 
+             await FindByCondition(x =>
+             x.OrganizationId.Equals(organizationId) &&
+             x.CountLetters >= contactParameters.CountLettersMin &&
              x.CountLetters < contactParameters.CountLettersMax &&
-             (x.Email.Contains(contactParameters.SearchTerm) || x.FirstName.Contains(contactParameters.SearchTerm) || 
+             (x.Email.Contains(contactParameters.SearchTerm) || x.FirstName.Contains(contactParameters.SearchTerm) ||
              x.LastName.Contains(contactParameters.SearchTerm)), contactParameters, trackChanges)
             .OrderBy(x => x.LastName)
             .ToListAsync();
 
-         //   return PagedList<Contact>.ToPagedList(contact, contactParameters.PageNumber, contactParameters.PageSize);
+        //   return PagedList<Contact>.ToPagedList(contact, contactParameters.PageNumber, contactParameters.PageSize);
         //}
 
         public async Task<Contact> GetContactByIdAsync(Guid organizationId, Guid id, ContactParameters contactParameters, bool trackChanges) =>
@@ -45,7 +44,7 @@ namespace Repository
 
         public void CreateCollectionContacts(Guid organizationId, IEnumerable<Contact> contacts)
         {
-            foreach(var contact in contacts)
+            foreach (var contact in contacts)
             {
                 CreateContact(organizationId, contact);
             }
