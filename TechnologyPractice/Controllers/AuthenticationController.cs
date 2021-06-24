@@ -16,7 +16,7 @@ namespace TechnologyPractice.Controllers
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        private readonly IAuthenticationManager _authManager; 
+        private readonly IAuthenticationManager _authManager;
 
         public AuthenticationController(ILoggerManager logger, IMapper mapper, UserManager<User> userManager, IAuthenticationManager authManager)
         {
@@ -50,10 +50,10 @@ namespace TechnologyPractice.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
         {
-            if (!await _authManager.ValidateUser(user)) 
-            { 
-                _logger.LogWarn($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password."); 
-                return Unauthorized(); 
+            if (!await _authManager.ValidateUser(user))
+            {
+                _logger.LogWarn($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password.");
+                return Unauthorized();
             }
 
             return Ok(new { Token = await _authManager.CreateToken() });

@@ -28,8 +28,8 @@ namespace Repository
 
         public async Task<string> CreateToken()
         {
-            var signingCredentials = GetSigningCredentials(); var claims = await GetClaims(); 
-            var tokenOptions = GenerateTokenOptions(signingCredentials, claims); 
+            var signingCredentials = GetSigningCredentials(); var claims = await GetClaims();
+            var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
@@ -42,9 +42,9 @@ namespace Repository
 
         private SigningCredentials GetSigningCredentials()
         {
-            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET")); 
-            var secret = new SymmetricSecurityKey(key); 
-            
+            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
+            var secret = new SymmetricSecurityKey(key);
+
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
@@ -54,10 +54,10 @@ namespace Repository
 
             var tokenOptions = new JwtSecurityToken
                 (
-                    issuer: jwtSettings.GetSection("validIssuer").Value, 
-                    audience: jwtSettings.GetSection("validAudience").Value, 
-                    claims: claims, 
-                    expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expires").Value)), 
+                    issuer: jwtSettings.GetSection("validIssuer").Value,
+                    audience: jwtSettings.GetSection("validAudience").Value,
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expires").Value)),
                     signingCredentials: signingCredentials
                 );
 
@@ -73,9 +73,9 @@ namespace Repository
             };
 
             var roles = await _userManager.GetRolesAsync(_user);
-            foreach (var role in roles) 
+            foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role)); 
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
             return claims;

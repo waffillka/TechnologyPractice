@@ -31,7 +31,7 @@ namespace TechnologyPractice.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+
         [HttpGet(Name = "GetOrganizations"), Authorize]
         public async Task<IActionResult> GetOrganizations([FromQuery] OrganizationParameters parameters)
         {
