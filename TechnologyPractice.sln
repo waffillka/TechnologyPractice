@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailService", "MailService\EmailService.csproj", "{9F93128E-6627-4641-9662-648BE3026AD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTechnologyPractice", "TestTechnologyPractice\TestTechnologyPractice.csproj", "{1E31DFDE-3DF1-4A7F-81EE-8E8B28FEBDD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestTechnologyPractice", "TestTechnologyPractice\TestTechnologyPractice.csproj", "{1E31DFDE-3DF1-4A7F-81EE-8E8B28FEBDD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
