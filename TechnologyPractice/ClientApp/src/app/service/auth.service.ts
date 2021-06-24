@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 
 export class AuthService {
 
-  uri = 'http://localhost:5000/api';
+  uri = 'http://localhost:5000/api/authentication/login';
   token;
 
   constructor(private http: HttpClient, private router: Router) { }
