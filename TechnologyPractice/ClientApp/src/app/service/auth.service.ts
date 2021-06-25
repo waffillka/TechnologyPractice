@@ -1,38 +1,56 @@
-import { Component } from '@angular/core';
 import { Injectable } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-
-@Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html'
-})
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { NgForm } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-
-  uri = 'http://localhost:5000/api/authentication/login';
+  uri = 'http://localhost:44369/api';
   token;
+  public invalidLogin: boolean;
 
-  constructor(private http: HttpClient, private router: Router) { }
-  login(email: string, password: string) {
-    this.http.post(this.uri + '/authenticate', { email: email, password: password })
-      .subscribe((resp: any) => {
+  constructor(private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) { }
 
-        this.router.navigate(['profile']);
-        localStorage.setItem('auth_token', resp.token);
+  public loginAuth(email: string, password: string) {
+    console.log(JSON.stringify({ username: email, password: password }));
+    const credentials = JSON.stringify({ username: email, password: password });
 
+    this.http.post('https://localhost:44369/api/authentication/login', credentials,
+    {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    }).subscribe((resp: any) => { 
+        console.log(resp.token);
+        this.invalidLogin = false;
+      localStorage.setItem('auth_token', resp.token);
+      this.router.navigate(['/fetch-data']);
+      }, err => {
+        console.log(err);
+        this.invalidLogin = true;
       });
   }
 
-  logout() {
-    localStorage.removeItem('token');
+  public logout() {
+    this.invalidLogin = false;
+    localStorage.removeItem('auth_token');
   }
 
   public get logIn(): boolean {
-    return (localStorage.getItem('token') !== null);
+    return (localStorage.getItem('auth_token') !== null);
+  }
+
+  public IsAuth(): boolean {
+    const token = localStorage.getItem("auth_token");
+
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      console.log(this.jwtHelper.decodeToken(token));
+      return true;
+    }
+    return false
   }
 }
