@@ -25,13 +25,27 @@ export class AuthService {
         "Content-Type": "application/json"
       })
     }).subscribe((resp: any) => { 
-        console.log(resp.token);
+        console.log(resp);
         this.invalidLogin = false;
       localStorage.setItem('auth_token', resp.token);
       this.router.navigate(['/fetch-data']);
       }, err => {
         console.log(err);
         this.invalidLogin = true;
+      });
+  }
+
+  public registrationAuth(data: string) {
+
+    this.http.post('https://localhost:44369/api/authentication', data,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }).subscribe((resp: any) => {
+        console.log(resp);        
+      }, err => {
+        console.log(err);
       });
   }
 

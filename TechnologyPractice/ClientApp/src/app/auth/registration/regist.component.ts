@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 import { AuthService } from '../../service/auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  //styleUrls: ['./login.component.css']
+  selector: 'app-regist',
+  templateUrl: './regist.component.html',
 })
 
 export class RegistComponent implements OnInit {
-  email = '';
-  password = '';
+
 
   constructor(private authService: AuthService) { }
 
-  Login() {
-    this.authService.loginAuth(this.email, this.password)
+  public registrAuth = (form: NgForm) => {
+    const credentials = JSON.stringify(form.value);
+    console.log(credentials);
+    this.authService.registrationAuth(credentials);
   }
 
   ngOnInit() { }

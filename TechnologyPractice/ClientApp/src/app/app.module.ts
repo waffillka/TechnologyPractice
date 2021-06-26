@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { LoginComponent } from './auth/login.component'
+import { RegistComponent } from './auth/registration/regist.component'
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LoginComponent } from './auth/login.component'
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    LoginComponent
+    LoginComponent,
+    RegistComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -31,6 +33,7 @@ import { LoginComponent } from './auth/login.component'
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard]},
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent },
+      { path: 'regist', component: RegistComponent },
     ]),
      JwtModule.forRoot({
        config: {
