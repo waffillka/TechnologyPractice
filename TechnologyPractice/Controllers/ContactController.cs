@@ -3,6 +3,7 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ namespace TechnologyPractice.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetContactsFormOrganization(Guid organizationId, [FromQuery] ContactParameters parameters)
         {
             var organization = await _repository.Organizations.GetOrganizationAsync(organizationId, new OrganizationParameters(), false);
@@ -48,7 +49,7 @@ namespace TechnologyPractice.Controllers
             return Ok(contactsDto);
         }
 
-        [HttpGet("{contactId}")]
+        [HttpGet("{contactId}"), Authorize]
         [ServiceFilter(typeof(ValidateContactExistsAttribute))]
         public IActionResult GetContactFormOrganizationById(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
         {
@@ -58,7 +59,7 @@ namespace TechnologyPractice.Controllers
             return Ok(contactDto);
         }
 
-        [HttpPost("sendEmail/{contactId}")]
+        [HttpPost("sendEmail/{contactId}"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidateContactExistsAttribute))]
         public async Task<IActionResult> SendEmail(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
         {
@@ -74,7 +75,7 @@ namespace TechnologyPractice.Controllers
             return Ok("message sent");
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
         public async Task<IActionResult> PostCreateContact(Guid organizationId, [FromBody] ContactCreationDto contact, [FromQuery] ContactParameters parameters)
@@ -89,7 +90,7 @@ namespace TechnologyPractice.Controllers
             return CreatedAtRoute("OrganizationById", new { id = contactToReturn.Id }, contactToReturn);
         }
 
-        [HttpPost("collection")]
+        [HttpPost("collection"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
         public async Task<IActionResult> PostCreateCollectionContacts(Guid organizationId, [FromBody] IEnumerable<ContactCreationDto> contacts, [FromQuery] ContactParameters parameters)
@@ -102,7 +103,7 @@ namespace TechnologyPractice.Controllers
             return NoContent();
         }
 
-        [HttpPut("{contactId}")]
+        [HttpPut("{contactId}"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateContactExistsAttribute))]
         public async Task<IActionResult> PutUpdateContact(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters, [FromBody] ContactCreationDto contact)
@@ -114,7 +115,7 @@ namespace TechnologyPractice.Controllers
             return NotFound();
         }
 
-        [HttpDelete("{contactId}")]
+        [HttpDelete("{contactId}"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidateContactExistsAttribute))]
         public async Task<IActionResult> DeleteContact(Guid organizationId, Guid contactId, [FromQuery] ContactParameters parameters)
         {
@@ -126,7 +127,7 @@ namespace TechnologyPractice.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{contactId}")]
+        [HttpPatch("{contactId}"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateContactExistsAttribute))]
         public async Task<IActionResult> PatchUpdateContact(Guid organizationId, Guid contactId, [FromQuery] OrganizationParameters parameters, [FromBody] JsonPatchDocument<ContactUpdateDto> patchDoc)

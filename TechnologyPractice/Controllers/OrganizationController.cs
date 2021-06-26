@@ -41,7 +41,7 @@ namespace TechnologyPractice.Controllers
             return Ok(organizationsDto);
         }
 
-        [HttpGet("{organizationId}", Name = "organizationId")]
+        [HttpGet("{organizationId}", Name = "organizationId"), Authorize]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
         public IActionResult GetOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters)
         {
@@ -51,7 +51,7 @@ namespace TechnologyPractice.Controllers
             return Ok(organizationDto);
         }
 
-        [HttpGet("collection/{organizationIds}")]
+        [HttpGet("collection/{organizationIds}"), Authorize]
         [ServiceFilter(typeof(ValidateCollectionOrganizationsExistsAttribute))]
         public IActionResult GetOrganization([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> organizationIds, [FromQuery] OrganizationParameters parameters)
         {
@@ -61,7 +61,7 @@ namespace TechnologyPractice.Controllers
             return Ok(organizationsDto);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> PostCreateOrganization([FromBody] OrganizationCreationDto organization, [FromQuery] OrganizationParameters parameters)
         {
@@ -75,7 +75,7 @@ namespace TechnologyPractice.Controllers
             return CreatedAtRoute("OrganizationById", new { id = organizationToReturn.Id }, organizationToReturn);
         }
 
-        [HttpPost("collection")]
+        [HttpPost("collection"), , Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> PostCreateCollectionOrganizations([FromBody] IEnumerable<OrganizationCreationDto> organizations, [FromQuery] OrganizationParameters parameters)
         {
@@ -86,7 +86,7 @@ namespace TechnologyPractice.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{organizationId}")]
+        [HttpDelete("{organizationId}"), , Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
         public async Task<IActionResult> DeleteOrganizationById(Guid organizationId, [FromQuery] OrganizationParameters parameters)
         {
@@ -97,7 +97,7 @@ namespace TechnologyPractice.Controllers
             return NoContent();
         }
 
-        [HttpPut("{organizationId}")]
+        [HttpPut("{organizationId}"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
         public async Task<IActionResult> PutUpdateOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters, [FromBody] OrganizationCreationDto organization)
@@ -109,7 +109,7 @@ namespace TechnologyPractice.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{organizationId}")]
+        [HttpPatch("{organizationId}"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
         public async Task<IActionResult> PatchUpdateOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters, [FromBody] JsonPatchDocument<OrganizationUpdateDto> patchDoc)
