@@ -75,7 +75,7 @@ namespace TechnologyPractice.Controllers
             return CreatedAtRoute("OrganizationById", new { id = organizationToReturn.Id }, organizationToReturn);
         }
 
-        [HttpPost("collection"), , Authorize(Roles = "Administrator")]
+        [HttpPost("collection"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> PostCreateCollectionOrganizations([FromBody] IEnumerable<OrganizationCreationDto> organizations, [FromQuery] OrganizationParameters parameters)
         {
@@ -86,7 +86,7 @@ namespace TechnologyPractice.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{organizationId}"), , Authorize(Roles = "Administrator")]
+        [HttpDelete("{organizationId}"), Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
         public async Task<IActionResult> DeleteOrganizationById(Guid organizationId, [FromQuery] OrganizationParameters parameters)
         {

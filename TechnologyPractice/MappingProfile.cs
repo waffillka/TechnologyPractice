@@ -19,6 +19,10 @@ namespace TechnologyPractice
             CreateMap<OrganizationUpdateDto, Organization>().ReverseMap();
 
             CreateMap<UserForRegistrationDto, User>();
+            CreateMap<UserForRegistrationWithoutRoleDto, User>();
+            
+            CreateMap<UserToReturn, User>();
+            CreateMap<User, UserToReturn>();
         }
     }
 }

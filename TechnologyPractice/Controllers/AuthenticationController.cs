@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -26,9 +27,49 @@ namespace TechnologyPractice.Controllers
             _authManager = authManager;
         }
 
+        [HttpPost("registrationUser")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationWithoutRoleDto userForRegistrationDto)
+        {
+            var user = _mapper.Map<User>(userForRegistrationDto);
+
+            var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+
+                return BadRequest(ModelState);
+            }
+            await _userManager.AddToRolesAsync(user, new string[] { "User" });
+            return StatusCode(201);
+        }
+
+        [HttpPost("registrationAdmin"), Authorize(Roles = "Administrator")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> RegisterAdmin([FromBody] UserForRegistrationWithoutRoleDto userForRegistrationDto)
+        {
+            var user = _mapper.Map<User>(userForRegistrationDto);
+
+            var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+
+                return BadRequest(ModelState);
+            }
+            await _userManager.AddToRolesAsync(user, new string[] { "Administrator" });
+            return StatusCode(201);
+        }
+
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
+        public async Task<IActionResult> Register([FromBody] UserForRegistrationDto userForRegistrationDto)
         {
             var user = _mapper.Map<User>(userForRegistrationDto);
 
@@ -55,8 +96,10 @@ namespace TechnologyPractice.Controllers
                 _logger.LogWarn($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password.");
                 return Unauthorized();
             }
-
-            return Ok(new { Token = await _authManager.CreateToken() });
+            var userFull = await _authManager.GetUserByName(user.UserName);
+            var userForReturn = _mapper.Map<UserToReturn>(userFull);
+            userForReturn.Roles =  await _userManager.GetRolesAsync(userFull);
+            return Ok(new { Token = await _authManager.CreateToken(), User = userForReturn });
         }
     }
 }

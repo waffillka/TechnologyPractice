@@ -26,6 +26,16 @@ namespace Repository
             _configuration = configuration;
         }
 
+        public async Task<User> GetUserByIdAsync(Guid id)
+        {
+            return await _userManager.FindByIdAsync(id.ToString());
+        }
+
+        public async Task<User> GetUserByName(string username)
+        {
+            return await _userManager.FindByNameAsync(username);
+        }
+
         public async Task<string> CreateToken()
         {
             var signingCredentials = GetSigningCredentials(); var claims = await GetClaims();

@@ -99,7 +99,7 @@ namespace TechnologyPractice.Controllers
 
             _repository.Contacts.CreateCollectionContacts(organizationId, contactEntity);
             await _repository.SaveAsync();
-
+            
             return NoContent();
         }
 
