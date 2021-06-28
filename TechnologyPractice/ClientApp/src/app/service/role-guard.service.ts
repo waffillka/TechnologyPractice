@@ -5,28 +5,32 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  role: string;
-  private router: Router;
-  constructor(role_: string, private path: string) {
-    this.role = role_;
-  }
+  private router: Router
+  constructor(public path: string) {}
 
   canActivate() {
-    const token = localStorage.getItem("auth_user");
-    const user : User = <User>JSON.parse(token);
+    const userJson = localStorage.getItem("auth_user");
+    console.log(userJson);
+    //const user: User = <User>JSON.parse(userJson);
+    const roleAdmin = 'Administrator';
+    const roleUser = 'User';
 
-    if (user == null) {
+    /*if (user == null) {
       return false;
     }
-    else if (user.roles[0] != this.role) {
-      console.log("role :" + this.role);
-      return false;
+    else if (user.roles[0] == roleAdmin) {
+      console.log("role :" + roleAdmin);
+      this.router.navigate([this.path]);
+      return true;
     }
+    else if (user.roles[0] == roleUser) {
+      console.log("role :" + roleUser);
+      this.router.navigate([this.path]);
+      return true;
+    }*/
     
-
-    this.router.navigate([this.path]);
-
-    return true;
+    this.router.navigate(['']);
+    return false;
   }
 }
 

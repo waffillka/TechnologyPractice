@@ -29,7 +29,7 @@ export class AuthService {
         this.invalidLogin = false;
       localStorage.setItem('auth_token', resp.token);
       localStorage.setItem('auth_user', resp.user);
-      this.router.navigate(['/home']);
+      this.router.navigate(['']);
       }, err => {
         console.log(err);
         this.invalidLogin = true;

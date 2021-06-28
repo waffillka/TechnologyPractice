@@ -6,7 +6,7 @@ import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-regist',
-  templateUrl: './regist.component.html',
+  templateUrl: './registAdmin.component.html',
 })
 
 export class RegistAdminComponent implements OnInit {

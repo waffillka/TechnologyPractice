@@ -32,11 +32,10 @@ import { RegistAdminComponent } from './auth/registrationAdmin/registAdmin.compo
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    Router,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent, canActivate: [AuthGuard, , new RoleGuard("User", 'fetch-data')]},
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard, new RoleGuard("Administrator", 'fetch-data')] },
+      { path: 'counter', component: CounterComponent, canActivate: [AuthGuard, new RoleGuard('counter')]},
+      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard, new RoleGuard('fetch-data')] },
       { path: 'login', component: LoginComponent },
       { path: 'regist', component: RegistComponent },
       { path: 'registAdmin', component: RegistComponent },
