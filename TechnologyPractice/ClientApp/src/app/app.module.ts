@@ -4,8 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient, HttpClientJsonpModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from "@auth0/angular-jwt";
+import { CanActivate, Router } from '@angular/router';
 
 import { AuthGuard } from './service/auth-guard.service';
+import { RoleGuard } from './service/role-guard.service';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -13,6 +15,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { LoginComponent } from './auth/login.component'
 import { RegistComponent } from './auth/registration/regist.component'
+import { RegistAdminComponent } from './auth/registrationAdmin/registAdmin.component'
 
 @NgModule({
   declarations: [
@@ -22,18 +25,21 @@ import { RegistComponent } from './auth/registration/regist.component'
     CounterComponent,
     FetchDataComponent,
     LoginComponent,
-    RegistComponent
+    RegistComponent,
+    RegistAdminComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    Router,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent, canActivate: [AuthGuard]},
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
+      { path: 'counter', component: CounterComponent, canActivate: [AuthGuard, , new RoleGuard("User", 'fetch-data')]},
+      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard, new RoleGuard("Administrator", 'fetch-data')] },
       { path: 'login', component: LoginComponent },
       { path: 'regist', component: RegistComponent },
+      { path: 'registAdmin', component: RegistComponent },
     ]),
      JwtModule.forRoot({
        config: {
@@ -43,7 +49,10 @@ import { RegistComponent } from './auth/registration/regist.component'
        }
      })
   ],
-  providers: [AuthGuard],
+  providers: [
+    AuthGuard,
+    RoleGuard
+  ],
   bootstrap: [AppComponent]
 })
 

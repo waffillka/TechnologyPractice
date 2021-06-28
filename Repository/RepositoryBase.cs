@@ -20,7 +20,7 @@ namespace Repository
 
         public void Delete(T entity) => RepositoryContext.Set<T>().Remove(entity);
 
-        public IQueryable<T> FindAll(RequestParameters parameters, bool trackChanges) =>
+        public virtual IQueryable<T> FindAll(RequestParameters parameters, bool trackChanges) =>
             !trackChanges ? RepositoryContext.Set<T>()
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize)
@@ -29,15 +29,7 @@ namespace Repository
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize);
 
-        //public IQueryable<T> FindCount(RequestParameters parameters, bool trackChanges) =>
-        //    !trackChanges ? RepositoryContext.Set<T>()
-        //        .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-        //        .Take(parameters.PageSize).AsNoTracking() 
-        //    : RepositoryContext.Set<T>()
-        //        .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-        //        .Take(parameters.PageSize);
-
-        public IQueryable<T> FindByCondition(System.Linq.Expressions.Expression<Func<T, bool>> expression, RequestParameters parameters, bool trackChanges) =>
+        public virtual IQueryable<T> FindByCondition(System.Linq.Expressions.Expression<Func<T, bool>> expression, RequestParameters parameters, bool trackChanges) =>
             !trackChanges ? RepositoryContext.Set<T>()
                 .Where(expression)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)

@@ -9,15 +9,15 @@ import { AuthService } from '../../service/auth.service';
   templateUrl: './regist.component.html',
 })
 
-export class RegistComponent implements OnInit {
+export class RegistAdminComponent implements OnInit {
 
 
   constructor(private authService: AuthService) { }
 
-  public registrAuthUser = (form: NgForm) => {
+  public registrAuthAdmin = (form: NgForm) => {
     const credentials = JSON.stringify(form.value);
     console.log(credentials);
-    this.authService.registrationAuthUser(credentials);
+    this.authService.registrationAuthAdmin(credentials);
   }
 
   ngOnInit() { }

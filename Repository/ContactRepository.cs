@@ -49,5 +49,33 @@ namespace Repository
                 CreateContact(organizationId, contact);
             }
         }
+
+        public override IQueryable<Contact> FindAll(RequestParameters parameters, bool trackChanges) =>
+            !trackChanges ? RepositoryContext.Set<Contact>()
+                .Include(u => u.OrganizationId)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .AsNoTracking()
+            : RepositoryContext.Set<Contact>()
+                .Include(organ => organ.Organization)
+                .Include(organ => organ.Organization)
+                .Include(hobby => hobby.Hobbies)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
+
+        public override IQueryable<Contact> FindByCondition(System.Linq.Expressions.Expression<Func<Contact, bool>> expression, RequestParameters parameters, bool trackChanges) =>
+            !trackChanges ? RepositoryContext.Set<Contact>()
+                .Where(expression)
+                .Include(organ => organ.Organization)
+                .Include(hobby => hobby.Hobbies)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .AsNoTracking()
+            : RepositoryContext.Set<Contact>()
+                .Where(expression)
+                .Include(organ => organ.Organization)
+                .Include(hobby => hobby.Hobbies)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
     }
 }

@@ -28,16 +28,17 @@ export class AuthService {
         console.log(resp);
         this.invalidLogin = false;
       localStorage.setItem('auth_token', resp.token);
-      this.router.navigate(['/fetch-data']);
+      localStorage.setItem('auth_user', resp.user);
+      this.router.navigate(['/home']);
       }, err => {
         console.log(err);
         this.invalidLogin = true;
       });
   }
 
-  public registrationAuth(data: string) {
+  public registrationAuthAdmin(data: string) {
 
-    this.http.post('https://localhost:44369/api/authentication', data,
+    this.http.post('https://localhost:44369/api/authentication/registrationAdmin', data,
       {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
@@ -49,9 +50,24 @@ export class AuthService {
       });
   }
 
+  public registrationAuthUser(data: string) {
+
+    this.http.post('https://localhost:44369/api/authentication/registrationUser', data,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      }).subscribe((resp: any) => {
+        console.log(resp);
+      }, err => {
+        console.log(err);
+      });
+  }
+
   public logout() {
     this.invalidLogin = false;
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_user');
   }
 
   public get logIn(): boolean {
