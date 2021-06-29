@@ -33,7 +33,7 @@ namespace TechnologyPractice.Controllers
 
 
         [HttpGet(Name = "GetOrganizations"), Authorize]
-        public async Task<IActionResult> GetOrganizations([FromQuery] OrganizationParameters parameters)
+        public async Task<IActionResult> GetALLOrganizations([FromQuery] OrganizationParameters parameters)
         {
             var organizations = await _repository.Organizations.GetAllOrganizationsAsync(false, parameters);
             var organizationsDto = _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
@@ -43,7 +43,7 @@ namespace TechnologyPractice.Controllers
 
         [HttpGet("{organizationId}", Name = "organizationId"), Authorize]
         [ServiceFilter(typeof(ValidateOrganizationExistsAttribute))]
-        public IActionResult GetOrganization(Guid organizationId, [FromQuery] OrganizationParameters parameters)
+        public async Task<IActionResult> GetOrganizationById(Guid organizationId, [FromQuery] OrganizationParameters parameters)
         {
             var organization = HttpContext.Items["organization"] as Organization;
             var organizationDto = _mapper.Map<OrganizationDto>(organization);
@@ -53,7 +53,7 @@ namespace TechnologyPractice.Controllers
 
         [HttpGet("collection/{organizationIds}"), Authorize]
         [ServiceFilter(typeof(ValidateCollectionOrganizationsExistsAttribute))]
-        public IActionResult GetOrganization([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> organizationIds, [FromQuery] OrganizationParameters parameters)
+        public async Task<IActionResult> GetOrganizations([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> organizationIds, [FromQuery] OrganizationParameters parameters)
         {
             var organizations = HttpContext.Items["organizations"] as Organization;
             var organizationsDto = _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
